@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Truth or Dare • Online Couples</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #e5e5e5; }
+    .grok-gradient { background: linear-gradient(90deg, #00ff9d, #00b8ff); }
+    .card { background: #111111; border: 1px solid #222; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="border-b border-gray-800 py-4">
+    <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl font-bold grok-gradient bg-clip-text text-transparent">Mxthi</span>
+        <span class="text-xl font-semibold">Truth or Dare</span>
+      </div>
+      <div class="flex gap-4 items-center">
+        <button onclick="switchLang()" id="langBtn" class="px-5 py-2 rounded-full bg-gray-900 hover:bg-gray-800 transition">O'zbekcha</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-5xl font-bold text-center mb-2">Truth or Dare</h1>
+    <p class="text-center text-gray-400 mb-10" id="subtitle">For Online Couples • Online Juftliklar uchun</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="card p-6 rounded-3xl">
+        <label class="block text-sm mb-2">Your Gender (Sizning jinsingiz)</label>
+        <select id="playerGender" class="w-full bg-gray-900 p-4 rounded-2xl">
+          <option value="boy">Boy / Yigit</option>
+          <option value="girl">Girl / Qiz</option>
+        </select>
+      </div>
+      <div class="card p-6 rounded-3xl">
+        <label class="block text-sm mb-2">Partner's Gender (Sherigingizning jinsingiz)</label>
+        <select id="partnerGender" class="w-full bg-gray-900 p-4 rounded-2xl">
+          <option value="boy">Boy / Yigit</option>
+          <option value="girl">Girl / Qiz</option>
+        </select>
+      </div>
+      <div class="card p-6 rounded-3xl flex items-center justify-center">
+        <button onclick="getQuestion()" class="w-full h-full text-2xl font-bold py-6 rounded-3xl grok-gradient text-black hover:scale-105 transition">
+          Get Question
+        </button>
+      </div>
+    </div>
+
+    <div id="questionArea" class="card p-10 rounded-3xl min-h-[300px] flex flex-col items-center justify-center text-center hidden">
+      <div id="mode" class="text-3xl font-bold mb-6 text-emerald-400"></div>
+      <p id="questionText" class="text-2xl leading-relaxed"></p>
+      <button onclick="getQuestion()" class="mt-10 px-8 py-3 border border-gray-600 rounded-full hover:bg-gray-900 transition">
+        Next → Keyingisi
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = 'en';
+
+    const questions = {
+      en: {
+        boy: {
+          truth: [
+            "What's the most embarrassing thing you've done in front of your partner?",
+            "Have you ever faked something in bed? Be honest.",
+            "What's your biggest turn-on when we're online together?",
+            "Describe your wildest fantasy involving your partner."
+          ],
+          dare: [
+            "Send a shirtless photo right now.",
+            "Type your horniest message to your partner and show it.",
+            "Do a seductive dance on video call for 20 seconds.",
+            "Moan your partner's name seductively."
+          ]
+        },
+        girl: {
+          truth: [
+            "What's one thing you want your partner to do to you but haven't told them?",
+            "Have you ever touched yourself thinking about your partner during our calls?",
+            "What's your guilty pleasure fantasy?",
+            "What's the naughtiest thing you've done online?"
+          ],
+          dare: [
+            "Show your partner what you're wearing under your top.",
+            "Send a voice note moaning softly.",
+            "Do a slow strip tease on camera.",
+            "Write 'I belong to [Partner's name]' on your body and show it."
+          ]
+        }
+      },
+      uz: {
+        boy: {
+          truth: [
+            "Sherigingiz oldida qilgan eng uyatchan ishingiz nima?",
+            "eng xush ko'rgan ishingiz nma?",
+            "Online bo'lganingizda nma qilishni yoqtirasiz?",
+            "Nechta Jigaringiz bor o'zi?"
+          ],
+          dare: [
+            "jigaringizga men so'takman deb ovozli xabar tashlang",
+            "qo'lingizga jigarizni ismini yozib rasm tashlang",
+            "jigaringizni ismini 20 marta aytib otjimaniya qiling",
+            "jigaringiz nmani xohlasa shuni ayting."
+          ]
+        },
+        girl: {
+          truth: [
+            "jigaringizdan xohlagan lekin eshitmagan bir narsangiz nima?",
+            "hozirda mxthlldan nmani yashirasiz?",
+            "Sizning eng yaxshi ko'rgan mashg'ulotingiz nma?",
+            "Internetda qilgan eng yaramas ishingiz nima?"
+          ],
+          dare: [
+            "men so'takman men ovozli xabar tashlang",
+            "jigaringiz nimani xohlasa shuni qiling",
+            "yoz haqida qo'shiq yoki sher yozib bering",
+            "ko'chaga chiqib, chiqganizni rasmga olib tashlang"
+          ]
+        }
+      }
+    };
+
+    function switchLang() {
+      currentLang = currentLang === 'en' ? 'uz' : 'en';
+      document.getElementById('langBtn').textContent = currentLang === 'en' ? "O'zbekcha" : "English";
+      document.getElementById('subtitle').textContent = currentLang === 'en' ? 
+        "For Online Couples • Online Juftliklar uchun" : 
+        "Online Juftliklar uchun • For Online Couples";
+    }
+
+    function getQuestion() {
+      const playerG = document.getElementById('playerGender').value;
+      const qArea = document.getElementById('questionArea');
+      const modeEl = document.getElementById('mode');
+      const textEl = document.getElementById('questionText');
+
+      const isTruth = Math.random() > 0.5;
+      const mode = isTruth ? "TRUTH" : "DARE";
+      modeEl.textContent = currentLang === 'en' ? mode : (isTruth ? "HAQIQAT" : "JASORAT");
+
+      const genderQs = questions[currentLang][playerG];
+      const list = isTruth ? genderQs.truth : genderQs.dare;
+      const question = list[Math.floor(Math.random() * list.length)];
+
+      textEl.textContent = question;
+      qArea.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
